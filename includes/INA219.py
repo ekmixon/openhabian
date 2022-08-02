@@ -159,10 +159,10 @@ class INA219:
         self.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S
         self.mode = Mode.SANDBVOLT_CONTINUOUS
         self.config = self.bus_voltage_range << 13 | \
-                      self.gain << 11 | \
-                      self.bus_adc_resolution << 7 | \
-                      self.shunt_adc_resolution << 3 | \
-                      self.mode
+                          self.gain << 11 | \
+                          self.bus_adc_resolution << 7 | \
+                          self.shunt_adc_resolution << 3 | \
+                          self.mode
         self.write(_REG_CONFIG,self.config)
 
     def getShuntVoltage_mV(self):
@@ -200,8 +200,8 @@ if __name__=='__main__':
         current = ina219.getCurrent_mA()                   # current in mA
         power = ina219.getPower_W()                        # power in W
         p = (bus_voltage - 6)/2.4*100
-        if(p > 100):p = 100
-        if(p < 0):p = 0
+        p = min(p, 100)
+        p = max(p, 0)
 
         # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
         #print("PSU Voltage:   {:6.3f} V".format(bus_voltage + shunt_voltage))
